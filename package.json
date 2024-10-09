@@ -11,8 +11,8 @@
     "cors": "^2.8.0"
   },
  "repository": {
-  "type": "git",
-  "url": "https://github.com/gnosis33/boilerplate-project-timestamp.git"
+    "type": "git",
+    "url": "https://github.com/gnosis33/boilerplate-project-timestamp.git"
   },
   "bugs": {
     "url": "https://github.com/gnosis33/boilerplate-project-timestamp/issues"
