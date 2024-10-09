@@ -10,21 +10,42 @@ var app = express();
 var cors = require('cors');
 app.use(cors({optionsSuccessStatus: 200}));  // some legacy browsers choke on 204
 
-// http://expressjs.com/en/starter/static-files.html
+// Serve static files from the 'public' folder
 app.use(express.static('public'));
 
-// http://expressjs.com/en/starter/basic-routing.html
+// Route to serve index.html from 'views' folder
 app.get("/", function (req, res) {
   res.sendFile(__dirname + '/views/index.html');
 });
 
+// Timestamp API
+app.get("/api/:date?", (req, res) => {
+  let date;
 
-// your first API endpoint... 
-app.get("/api/hello", function (req, res) {
-  res.json({greeting: 'hello API'});
+  // Handle if no date is provided (current date)
+  if (!req.params.date) {
+    date = new Date();
+  } else {
+    const dateString = req.params.date;
+
+    // Check if the date is a Unix timestamp (i.e., contains only digits)
+    if (!isNaN(dateString)) {
+      date = new Date(parseInt(dateString));
+    } else {
+      date = new Date(dateString);
+    }
+  }
+
+  // Check if date is valid
+  if (date.toString() === "Invalid Date") {
+    res.json({ error: "Invalid Date" });
+  } else {
+    res.json({
+      unix: date.getTime(),
+      utc: date.toUTCString()
+    });
+  }
 });
-
-
 
 // Listen on port set in environment variable or default to 3000
 var listener = app.listen(process.env.PORT || 3000, function () {
